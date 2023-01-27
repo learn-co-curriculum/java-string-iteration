@@ -38,6 +38,8 @@ for (int i=0;i<arrayOfChars.length; i++) {
 }
 ```
 
+The code prints:
+
 ```text
 h
 e
@@ -68,10 +70,22 @@ for (char c : str.toCharArray()) {
 }
 ```
 
+We get the same output:
+
+```text
+h
+e
+l
+l
+o
+```
+
 Let's create a class `StringSearchUtility`
 that provides several useful methods for searching
 the contents of a string.  We'll add a method named `countA`
 to count how many times the letter 'A' appears in a string.
+The method iterates over the characters in the parameter
+string, incrementing a counter if the character is an 'A':
 
 ```java
 public static int countA(String str) {
@@ -104,7 +118,7 @@ public class StringSearchUtility {
     }
 
     public static void main(String[] args) {
-        System.out.println(countA("BABY")); //2
+        System.out.println(countA("BABY")); //1
         System.out.println(countA("BANANA")); //3
         System.out.println(countA("123!")); //0
         System.out.println(countA("")); //0
@@ -117,7 +131,7 @@ public class StringSearchUtility {
 The program should print:
 
 ```text
-2
+1
 3
 0
 0
@@ -156,16 +170,18 @@ Running the Junit test class `StringSearchUtilityTest` should result in the test
 Let's add a predicate method `containsA` that returns a `boolean` value indicating
 whether a string contains the character 'A'.  In a subsequent lesson we'll see there
 are existing `String` methods that we could use, but for now we'll implement this
-manually to show an example method that returns a value from within a loop.
+manually to show an example method that returns a value from within a loop, as well
+as a different value after the loop.
 
 One approach to implement the `containsA` method is to simply have it
 call the `countA` method and test if the result is positive.  However,
 what if some of our strings contain lots of characters?  Rather than iterating through
-the long string to count the total number of 'A' characters,
+the long sequence of characters to count the total number of 'A' characters,
 it would be more efficient to return `true` as soon as we find the first 'A'.
 
 We'll add our new method `containsA` to the `StringSearchUtility` class.
-Note that the method only returns `false` after looping through the entire
+Note that the method returns `true` in the for loop as soon as it finds an 'A',
+but only returns `false` after looping through the entire
 string and not finding any 'A' characters.
 
 
@@ -180,6 +196,39 @@ public static boolean containsA(String str) {
 }
 ```
 
+NOTE: A common error is to use an `if-else` as shown below.  But this code will only
+loop once, returning a value based on whether the
+first character in the string is an 'A', it never looks
+at the rest of the string.  The correct
+code shown above waits until *after* the loop to return `false`.
+
+<table>
+<tr>
+<th>Don't write this!</th>
+</tr>
+<tr>
+<td>
+
+<pre>
+<code>
+
+public static boolean containsA(String str) {
+    for (char c : str.toCharArray()) {
+        if (c == 'A') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    return false;
+}
+
+</code>
+</pre>
+
+</td></tr>
+</table>
 
 Let's update the Junit class `StringSearchUtilityTest` with a new test method:
 
@@ -207,9 +256,9 @@ with each uppercase letter, but that would be an annoying boolean
 expression to have to write:
 
 ```java
-public static boolean containsRelationalOperator(String str) {
+public static boolean containsUppercase(String str) {
     for (char c : str.toCharArray()) {
-        if (c == 'A' || c == 'B' ||  ....... || c == 'Z') {
+        if (c == 'A' || c == 'B' || c == 'C' || ....... || c == 'Z' ) {
             return true;
         }
     }
@@ -224,7 +273,8 @@ Notice the decimal values for the uppercase letters in the ASCII table:
 Recall from the previous lesson that we can treat a `char` as a decimal value,
 so 'A' and 65 represent the same character, and 'Z' and 90 represent the same character.
 Thus, we can check if a character is an uppercase letter by testing if
-it falls within an inclusive range of decimal values `65` and `90`.
+it falls within an inclusive range of decimal values `65` and `90`,
+or we can simply use 'A' and 'Z' for the range:
 
 
 ```java
@@ -251,7 +301,65 @@ public void containsUppercase() {
 }
 ```
 
-Running the Junit test class `StringSearchUtilityTest` should result in all three test methods passing.
+Running the Junit test class `StringSearchUtilityTest` should result in all test methods passing.
+
+
+## Comprehension Check
+
+<details>
+   <summary>Look at the ASCII table. What range of characters would the method count?</summary>
+
+  <p>83 and 90 represent the range 'S' to 'Z'</p>
+
+</details>
+
+
+```java
+public static int countCharsInRange(String str) {
+    int count = 0;
+    for (char c : str.toCharArray()) {
+        if (c >= 83 && c <= 90 ) {
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+
+<details>
+   <summary>Consider the code shown below.
+   The code should print <code>true</code> since the string contains the '<' character,
+   but it prints <code>false</code>.  Can you explain the error?  </summary>
+
+  <p>The for loop should not contain an <code>else</code>.  The value <code>false</code>
+  should only be returned after the for loop, allowing the entire string to be searched.
+  The <code>else</code> causes the method to only look at the first character in the string.</p>
+
+</details>
+
+```java
+public class Example2 {
+    public static boolean containsComparisonOperator(String str) {
+        for (char c : str.toCharArray()) {
+            if (c == '<' || c == '>') {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        //should print true since string contains '<', but prints false
+        System.out.println(containsComparisonOperator("123 < 100"));
+    }
+
+}
+```
+
 
 
 ## Code Check
