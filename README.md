@@ -197,10 +197,12 @@ public static boolean containsA(String str) {
 ```
 
 NOTE: A common error is to use an `if-else` as shown below.  But this code will only
-loop once, returning a value based on whether the
+loop once, returning a boolean value based on whether the
 first character in the string is an 'A', it never looks
-at the rest of the string.  The correct
-code shown above waits until *after* the loop to return `false`.
+at the rest of the string. You can use the Java Visualizer to step through
+[this example](https://pythontutor.com/visualize.html#code=public%20class%20IterationError%20%7B%0A%20%20%20%20public%20static%20boolean%20containsA%28String%20str%29%20%7B%0A%20%20%20%20%20%20%20%20for%20%28char%20c%20%3A%20str.toCharArray%28%29%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28c%20%3D%3D%20'A'%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20true%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20false%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20return%20false%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20public%20static%20void%20main%28String%5B%5D%20args%29%20%7B%0A%20%20%20%20%20%20%20%20//should%20print%20true%20since%20string%20contains%20'A',%20but%20prints%20false%0A%20%20%20%20%20%20%20%20System.out.println%28containsA%28%22GOOD%20DAY!%22%29%29%3B%0A%20%20%20%20%7D%0A%0A%7D%0A&cumulative=false&curInstr=0&heapPrimitives=true&mode=display&origin=opt-frontend.js&py=java&rawInputLstJSON=%5B%5D&textReferences=false) and see the error.
+The correct code shown above waits until *after* the loop has finished
+executing to return `false`.
 
 <table>
 <tr>
@@ -229,6 +231,9 @@ public static boolean containsA(String str) {
 
 </td></tr>
 </table>
+
+
+
 
 Let's update the Junit class `StringSearchUtilityTest` with a new test method:
 
@@ -330,10 +335,12 @@ public static int countCharsInRange(String str) {
 <details>
    <summary>Consider the code shown below.
    The code should print <code>true</code> since the string contains the '<' character,
-   but it prints <code>false</code>.  Can you explain the error?  </summary>
+   but it prints <code>false</code>.  Can you explain the error?  Perhaps use IntelliJ's debugger or
+   the <a href="https://pythontutor.com/java.html#mode=edit">Java Visualizer</a> and step through
+   the loop to identify the error.</summary>
 
   <p>The for loop should not contain an <code>else</code>.  The value <code>false</code>
-  should only be returned after the for loop, allowing the entire string to be searched.
+  should only be returned after the for loop has finished executing, allowing the entire string to be searched.
   The <code>else</code> causes the method to only look at the first character in the string.</p>
 
 </details>
